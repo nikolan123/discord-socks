@@ -4,12 +4,13 @@ import requests
 import re
 import io
 import random
+import g4f
 
 app = Flask(__name__)
 
-def gibimage(titlehdv, disc, footr):
-    image_width = 700
-    image_height = 150
+def gibimage(titlehdv, disc, footr, image_width, image_height):
+    # image_width = 700
+    # image_height = 150
     image = Image.new('RGB', (image_width, image_height), color=(255, 255, 255))
 
     draw = ImageDraw.Draw(image)
@@ -90,24 +91,25 @@ def catch_chfsdsdfsdffannels(subpath=''):
 @app.route('/mc/')
 @app.route('/mc/<path:subpath>')
 def catch_asdchfsdsdfsdffannels(subpath=''):
-    try:
-        splitsb = subpath.split('/')
-        server = splitsb[0]
-        url = f"https://ping.cornbread2100.com/ping/?ip={server}&port=25565"
-        response = requests.get(url)
+    while True:
+        try:
+            splitsb = subpath.split('/')
+            server = splitsb[0]
+            url = f"https://ping.cornbread2100.com/ping/?ip={server}&port=25565"
+            response = requests.get(url)
 
-        if response.status_code == 200:
-            jsons = response.json()
-            titleh = f"{server} is up!"
-            motd = jsons['description']['text']
-            cleanmotd = re.sub(r'§[a-f0-9klr]', ' ', motd)
-            cleanmotd = re.sub(r'\s+', ' ', cleanmotd)
-            cleanmotd = re.sub(r'[^\x00-\x7F]+', '', cleanmotd)
-        else:
-            return send_file(gibimage("Error Aww what a shamey ):", response.text, "Thanks to Cornbread 2100 for letting me use his API <3"), mimetype='image/png')
-        return send_file(gibimage(titleh, cleanmotd, "Thanks to Cornbread 2100 for letting me use his API <3"), mimetype='image/png')
-    except Exception as e:
-        return send_file(gibimage("ok", "ok", "Thanks to Cornbread 2100 for letting me use his API <3"), mimetype='image/png')
+            if response.status_code == 200:
+                jsons = response.json()
+                titleh = f"{server} is up!"
+                motd = jsons['description']['text']
+                cleanmotd = re.sub(r'§[a-f0-9klr]', ' ', motd)
+                cleanmotd = re.sub(r'\s+', ' ', cleanmotd)
+                cleanmotd = re.sub(r'[^\x00-\x7F]+', '', cleanmotd)
+            else:
+                return send_file(gibimage("Error Aww what a shamey ):", response.text, "Thanks to Cornbread 2100 for letting me use his API <3", 700, 150), mimetype='image/png')
+            return send_file(gibimage(titleh, cleanmotd, "Thanks to Cornbread 2100 for letting me use his API <3", 700, 150), mimetype='image/png')
+        except Exception as e:
+            return send_file(gibimage("ok", "ok", "Thanks to Cornbread 2100 for letting me use his API <3", 700, 150), mimetype='image/png')
 
 # s/o/ck -> s/ls/f
 @app.route('/channef')
@@ -137,16 +139,43 @@ def catch_awedfsdchfsdsdfsdffannels(subpath=''):
                 cleanmotd = re.sub(r'\s+', ' ', cleanmotd)
                 cleanmotd = re.sub(r'[^\x00-\x7F]+', '', cleanmotd)
             else:
-                return send_file(gibimage("Error Aww what a shamey ):", response.text, "s/ef/$&/h for next page, Thanks to Cornbread 2100 for letting me use his API <3"), mimetype='image/png')
-            return send_file(gibimage(titleh, cleanmotd, "s/ef/$&/h for next page, Thanks to Cornbread 2100 for letting me use his API <3"), mimetype='image/png')
+                return send_file(gibimage("Error Aww what a shamey ):", response.text, "s/ef/$&/h for next page, Thanks to Cornbread 2100 for letting me use his API <3", 700, 150), mimetype='image/png')
+            return send_file(gibimage(titleh, cleanmotd, "s/ef/$&/h for next page, Thanks to Cornbread 2100 for letting me use his API <3", 700, 150), mimetype='image/png')
         except Exception as e:
             print(e)
+
+
+
 
 @app.route('/invite/')
 @app.route('/invite/<path:subpath>')
 def catch_chffffsfannels(subpath=''):
     return render_template("invite.html", title="ok")
 
+
+# s/o/ck -> s/chan/ai -> s/nels//hi
+@app.route('/ai/')
+@app.route('/ai/<path:subpath>')
+def catch_hfakjdhfjksdhfjkajkdsfhjknels(subpath=''):
+    g4f.debug.logging = False  # enable logging
+    g4f.check_version = False  # Disable automatic version checking
+
+    response = g4f.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": subpath.split('/')[0]}],
+        stream=True,
+    )
+    gptout = ""
+    for message in response:
+        gptout += message
+    return send_file(gibimage("AI", gptout, "-", 700, 500), mimetype='image/png')
+
+# s/o/ck -> s/chan/ai
+@app.route('/ainels/')
+@app.route('/ainels/<path:subpath>')
+def catch_chfsfgergdsdfsdffannels(subpath=''):
+    filename = "images/ai.png"
+    return send_file(filename, mimetype='image/gif')
 
 
 @app.route('/generate_image', methods=['GET'])
@@ -159,7 +188,7 @@ def generatjle_image():
 
 
 
-    return send_file(gibimage(big_text, small_text, footer_text), mimetype='image/png')
+    return send_file(gibimage(big_text, small_text, footer_text, 700, 700), mimetype='image/png')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
